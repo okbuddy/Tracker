@@ -7,16 +7,26 @@
 //
 
 #import "AppDelegate.h"
+#import "BNRDrawViewController.h"
+#import "BNRDrawView.h"
+
 
 @interface AppDelegate ()
-
+@property(nonatomic,strong)BNRDrawViewController* dra;
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.window=[[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     // Override point for customization after application launch.
+    self.dra=[[BNRDrawViewController alloc]init];
+    self.window.rootViewController=self.dra;
+    
+    self.window.backgroundColor=[UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+
     return YES;
 }
 
@@ -28,6 +38,14 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    if ([(BNRDrawView*)self.dra.view saveTheData]) {
+        NSLog(@"save the graphs");
+        NSLog(@"app dir: %@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
+    }
+    else
+    {
+        NSLog(@"archive failure");
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
